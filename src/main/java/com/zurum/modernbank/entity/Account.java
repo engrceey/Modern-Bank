@@ -17,8 +17,8 @@ import java.util.List;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long accountId;
 
     private String accountType;
 
@@ -26,9 +26,9 @@ public class Account {
 
     private BigDecimal accountBalance;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<Transaction> transactions;
 }

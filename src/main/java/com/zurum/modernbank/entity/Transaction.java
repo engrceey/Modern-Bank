@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @NotBlank
@@ -26,10 +26,11 @@ public class Transaction {
     @UpdateTimestamp
     private LocalDateTime transactionTime;
 
-
     private String transactionType;
 
-    @NotBlank
+    private String status;
+
+//
     @ManyToOne(cascade = CascadeType.ALL)
-    private Account account;
+    private User user;
 }

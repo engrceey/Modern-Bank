@@ -1,10 +1,9 @@
 package com.zurum.modernbank.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.internal.build.AllowPrintStacktrace;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -16,19 +15,21 @@ import javax.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user")
 public class User  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long user_id;
 
     @NotBlank
+    @Column(unique = true)
     private String username;
 
     @NotBlank
@@ -37,12 +38,14 @@ public class User  {
     @NotBlank
     private String lastName;
 
+    @Lob
     @NotBlank
-    @Size(min = 5, max = 15)
+    @Size(min = 5)
     private String password;
 
     @NotBlank
     @Email
+    @Column(unique = true)
     private String email;
 
     @UpdateTimestamp
@@ -52,8 +55,13 @@ public class User  {
     private LocalDateTime createdDate;
 
     @Past
-    private LocalDate dob;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date dob;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne( cascade = CascadeType.ALL)
     private Account account;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
 }

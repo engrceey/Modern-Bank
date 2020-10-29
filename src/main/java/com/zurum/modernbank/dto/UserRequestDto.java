@@ -1,13 +1,14 @@
 package com.zurum.modernbank.dto;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Past;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserRequestDto {
 
     private long id;
@@ -21,6 +22,7 @@ public class UserRequestDto {
     private String email;
 
     @Past
-    private LocalDate dob;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date dob;
 
 }

@@ -22,8 +22,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("user/registration")
-    @ApiOperation(value = "update an existing user profile details",
-            notes = "update an existing user profile details",
+    @ApiOperation(value = "Register a new user",
+            notes = "Register a user",
             response = User.class)
     public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) throws Exception {
         User newUser = userService.registerUser(userRegistrationDto);

@@ -1,7 +1,11 @@
 package com.zurum.modernbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,7 +17,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -21,15 +24,20 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@ApiModel(description = "this is the user entity")
 public class User  {
 
     @Id
+    @ApiModelProperty(notes = "the unique id of the users")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_id;
 
     @NotBlank
-    @Column(unique = true)
+    @ApiModelProperty(notes = "the users name")
+    @Column(unique = true, nullable = false)
     private String username;
 
     @NotBlank
@@ -44,8 +52,9 @@ public class User  {
     private String password;
 
     @NotBlank
+
     @Email
-    @Column(unique = true)
+    @Column(unique = true, updatable = false, nullable = false)
     private String email;
 
     @UpdateTimestamp

@@ -5,5 +5,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface TransactionService {
 
-//    ResponseEntity<ApiResponse<>>
+
 }

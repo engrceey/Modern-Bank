@@ -32,5 +32,9 @@ public class Transaction {
 
 //
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "acoountId")
+    private Account account;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 }

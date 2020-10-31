@@ -2,7 +2,9 @@ package com.zurum.modernbank.controller;
 
 import com.zurum.modernbank.dto.UserRegistrationDto;
 import com.zurum.modernbank.dto.UserRequestDto;
+import com.zurum.modernbank.dto.UserUpdateDto;
 import com.zurum.modernbank.entity.User;
+import com.zurum.modernbank.repository.UserRepository;
 import com.zurum.modernbank.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,13 @@ public class UserController {
         return new ResponseEntity<>(userRequestDto, HttpStatus.OK);
     }
 
-
+   @PutMapping("update/user/{id}")
+   @ApiOperation(value = "Updates users profile details",
+           notes = "Update a users profile",
+           response = User.class)
+    public ResponseEntity<User> updateUserDetail(@PathVariable("id") long id,@RequestBody UserUpdateDto updateDto) {
+        User userUpdateDto = userService.updateUser(id, updateDto);
+        return new ResponseEntity<>(userUpdateDto,HttpStatus.OK);
+   }
 
 }

@@ -29,6 +29,6 @@ public class Account {
     @OneToOne
     private User user;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Transaction> transactions;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 }

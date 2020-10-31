@@ -21,6 +21,4 @@ public class UserRegistrationDto {
     private String email;
 
     private Date dob;
-
-
 }

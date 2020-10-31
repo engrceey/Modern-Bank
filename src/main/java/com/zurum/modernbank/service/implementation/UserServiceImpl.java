@@ -2,9 +2,11 @@ package com.zurum.modernbank.service.implementation;
 
 import com.zurum.modernbank.dto.UserRegistrationDto;
 import com.zurum.modernbank.dto.UserRequestDto;
+import com.zurum.modernbank.dto.UserUpdateDto;
 import com.zurum.modernbank.entity.User;
 import com.zurum.modernbank.exception.ApiRequestException;
 import com.zurum.modernbank.exception.UserNotFoundException;
+import com.zurum.modernbank.repository.AccountRepository;
 import com.zurum.modernbank.repository.UserRepository;
 import com.zurum.modernbank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +20,22 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public UserServiceImpl(PasswordEncoder encoder, UserRepository userRepository) {
+    public UserServiceImpl(PasswordEncoder encoder, UserRepository userRepository, AccountRepository accountRepository) {
         this.encoder = encoder;
         this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
     }
 
 
     @Override
-    public User registerUser(UserRegistrationDto userRegistrationDto){
+    public User registerUser(UserRegistrationDto userRegistrationDto) {
         User user = new User();
 
         Optional<User> checkMail = userRepository.findUserByEmail(userRegistrationDto.getEmail());
-        if(checkMail.isPresent()) {
+        if (checkMail.isPresent()) {
             throw new ApiRequestException("Email already in use");
         }
 
@@ -41,16 +45,15 @@ public class UserServiceImpl implements UserService {
         String password = userRegistrationDto.getPassword();
         String passwordTwo = userRegistrationDto.getRetypePassword();
 
-        if(!password.equals(passwordTwo)) {
+        if (!password.equals(passwordTwo)) {
             throw new ApiRequestException("Password Mismatch");
         }
-
         user.setPassword(encoder.encode(userRegistrationDto.getPassword()));
+
         user.setUsername(userRegistrationDto.getUsername());
+
         user.setDob(userRegistrationDto.getDob());
-
-       return userRepository.save(user);
-
+        return userRepository.save(user);
     }
 
     @Override
@@ -58,8 +61,8 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = userRepository.findById(id);
 
-        if(user.isEmpty()) {
-            throw new UserNotFoundException("User with id "+id+" not found");
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User with id " + id + " not found");
         }
 
         UserRequestDto userRequestDto = new UserRequestDto();
@@ -72,4 +75,37 @@ public class UserServiceImpl implements UserService {
 
         return userRequestDto;
     }
+
+    @Override
+    public UserRequestDto getAccountStatement(long id) {
+        return null;
+    }
+
+    @Override
+    public User updateUser(long id, UserUpdateDto userUpdate) {
+
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User with id " + id + " not found");
+        }
+
+        user.get().setUsername(userUpdate.getUsername());
+        user.get().setLastName(userUpdate.getLastName());
+        user.get().setFirstName(userUpdate.getFirstName());
+
+        String password = userUpdate.getPassword();
+        String confirmPassword = userUpdate.getConfirmPassword();
+
+        if (!password.equals(confirmPassword)) {
+            throw new ApiRequestException("Password Mismatch");
+        }
+
+        System.out.println("89");
+        user.get().setPassword(encoder.encode(userUpdate.getPassword()));
+
+        return userRepository.save(user.get());
+    }
+
+
 }

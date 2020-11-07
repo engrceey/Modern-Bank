@@ -27,34 +27,38 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@ApiModel(description = "this is the user entity")
+@ApiModel(description = "this is the users entity")
 public class User  {
 
     @Id
-    @ApiModelProperty(notes = "the unique id of the users")
+    @ApiModelProperty(value = "the unique id of the users")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_id;
 
     @NotBlank
-    @ApiModelProperty(notes = "the users name")
+    @ApiModelProperty(value = "the users name")
     @Column(unique = true, nullable = false)
     private String username;
 
     @NotBlank
+    @ApiModelProperty(value = "this is users firstname")
     private String firstName;
 
     @NotBlank
+    @ApiModelProperty(value = "this is users lastname")
     private String lastName;
 
     @Lob
     @NotBlank
     @Size(min = 5)
+    @ApiModelProperty(value = "encoded password")
     private String password;
 
     @NotBlank
 
     @Email
     @Column(unique = true, updatable = false, nullable = false)
+    @ApiModelProperty(value = "unique")
     private String email;
 
     @UpdateTimestamp
@@ -65,6 +69,7 @@ public class User  {
 
     @Past
     @JsonFormat(pattern="yyyy-MM-dd")
+    @ApiModelProperty(value = "Users Date of birth")
     private Date dob;
 
     @OneToOne( cascade = CascadeType.ALL)

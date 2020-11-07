@@ -32,7 +32,7 @@ public class Transaction {
 
 //
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "acoountId")
+    @JoinColumn(name = "account")
     private Account account;
 
     @ManyToOne(cascade = CascadeType.ALL)

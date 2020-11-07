@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserRegistrationDto userRegistrationDto) {
-        User user = new User();
 
+        User user = new User();
         Optional<User> checkMail = userRepository.findUserByEmail(userRegistrationDto.getEmail());
         if (checkMail.isPresent()) {
             throw new ApiRequestException("Email already in use");
@@ -54,17 +54,16 @@ public class UserServiceImpl implements UserService {
 
         user.setDob(userRegistrationDto.getDob());
         return userRepository.save(user);
+
     }
 
     @Override
     public UserRequestDto getUserDetails(long id) {
-
         Optional<User> user = userRepository.findById(id);
 
         if (user.isEmpty()) {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
-
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setId(user.get().getUser_id());
         userRequestDto.setDob(user.get().getDob());
@@ -83,29 +82,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(long id, UserUpdateDto userUpdate) {
-
         Optional<User> user = userRepository.findById(id);
-
         if (user.isEmpty()) {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
-
         user.get().setUsername(userUpdate.getUsername());
         user.get().setLastName(userUpdate.getLastName());
         user.get().setFirstName(userUpdate.getFirstName());
 
-        String password = userUpdate.getPassword();
-        String confirmPassword = userUpdate.getConfirmPassword();
-
-        if (!password.equals(confirmPassword)) {
-            throw new ApiRequestException("Password Mismatch");
-        }
-
-        System.out.println("89");
-        user.get().setPassword(encoder.encode(userUpdate.getPassword()));
-
         return userRepository.save(user.get());
     }
-
 
 }

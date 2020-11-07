@@ -4,7 +4,6 @@ import com.zurum.modernbank.dto.UserRegistrationDto;
 import com.zurum.modernbank.dto.UserRequestDto;
 import com.zurum.modernbank.dto.UserUpdateDto;
 import com.zurum.modernbank.entity.User;
-import com.zurum.modernbank.repository.UserRepository;
 import com.zurum.modernbank.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,13 @@ import javax.validation.Valid;
 @RequestMapping("/api/")
 public class UserController {
 
+
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("user/registration")
     @ApiOperation(value = "Register a new user",

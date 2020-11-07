@@ -5,7 +5,7 @@ import com.zurum.modernbank.entity.User;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class TransactionRequestDto {
+public class TransactionResponseDto {
 
     private long id;
 
